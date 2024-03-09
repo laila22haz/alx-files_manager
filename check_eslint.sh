@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 PATHS=(
-    #"server.js"
+    "server.js"
     #"worker.js"
     "utils/*"
-    #"routes/*"
-    #"controllers/*"
+    "routes/*"
+    "controllers/*"
     # "tests/*"
 )
 
