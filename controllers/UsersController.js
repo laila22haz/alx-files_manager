@@ -6,7 +6,7 @@ class UsersController {
   static async postNew(req, res) {
     const { email, password } = req.body;
     if (!email) {
-      return res.status(400).send({
+      return res.status(400).json({
         message: 'Missing email',
       });
     }
@@ -23,8 +23,8 @@ class UsersController {
     }
 
     const hashedPassword = sha1(password);
-    const result = dbClient.db.collection('users').insertOne({ email, password: hashedPassword });
-    const user = { _id: result.insertId, email };
+    const result = await dbClient.db.collection('users').insertOne({ email, password: hashedPassword });
+    const user = { id: result.insertedId, email };
     return res.status(201).json(user);
   }
 }
