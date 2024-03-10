@@ -21,10 +21,9 @@ class UsersController {
         message: 'Already exist',
       });
     }
-
     const hashedPassword = sha1(password);
     const result = await dbClient.db.collection('users').insertOne({ email, password: hashedPassword });
-    return res.status(201).json({ id: result.insertedId, email });
+    return res.status(201).json({ id: result.insertedId.toString(), email });
   }
 }
 
