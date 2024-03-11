@@ -8,7 +8,7 @@ class AuthController {
   static async getConnect(req, res) {
     const authHeader = req.header('Authorization');
     const baseCredentials = authHeader.split(' ')[1];
-    const credentials = Buffer.from(baseCredentials, 'base64').toString('ascii');
+    const credentials = Buffer.from(baseCredentials, 'base64').toString('utf-8');
     const [email, password] = credentials.split(':');
 
     const user = await dbClient.db.collection('users').findOne({ email, password: sha1(password) });
