@@ -70,8 +70,8 @@ class FilesController {
     const fileData = Buffer.from(data, 'base64');
     await fs.promises.mkdir(folderPath, { recursive: true });
     await fs.promises.writeFile(filePath, fileData);
-    ObjectData.localPath = filePath;
-    const uploadFlie = await dbClient.db.collection('files').insertOne(ObjectData);
+    objectData.localPath = filePath;
+    const uploadFlie = await dbClient.db.collection('files').insertOne(objectData);
     const [ops] = uploadFlie.ops; // we can do also ops = uploadFile.ops[0]
     const result = {
       id: ops._id.toString(),
