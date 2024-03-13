@@ -11,7 +11,7 @@ const getTokenUser = async (req) => {
   return (userId);
 };
 
-class FilesControlle {
+class FilesController {
   static async postUpload(req, res) {
     const userId = await getTokenUser(req);
     if (!userId) {
@@ -84,4 +84,5 @@ class FilesControlle {
     return res.status(201).json(result);
   }
 }
-export default FilesControlle;
+
+export default FilesController;
