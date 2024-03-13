@@ -14,7 +14,6 @@ const getTokenUser = async (req) => {
 class FilesControlle {
   static async postUpload(req, res) {
     const userId = await getTokenUser(req);
-    console.log(userId);
     if (!userId) {
       res.status(401).json({ error: 'Unauthorized' });
     }
@@ -33,7 +32,7 @@ class FilesControlle {
       return res.status(400).json({ error: 'Missing type' });
     }
     if (!data && type !== 'folder') {
-      return res.status(400).json({ error: 'Missing type' });
+      return res.status(400).json({ error: 'Missing data' });
     }
     if (parentId) {
       const file = dbClient.db.collection('files').findOne({ _id: ObjectId(parentId) });
@@ -41,7 +40,6 @@ class FilesControlle {
       if (!file) {
         return res.status(400).json({ error: 'Parent not found' });
       }
-
       if (file.type !== 'folder') {
         return res.status(400).json({ error: 'Parent is not a folder' });
       }
