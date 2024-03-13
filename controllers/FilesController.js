@@ -15,11 +15,11 @@ class FilesController {
   static async postUpload(req, res) {
     const userId = await getTokenUser(req);
     if (!userId) {
-      res.status(401).json({ error: 'Unauthorized' });
+      return res.status(401).json({ error: 'Unauthorized' });
     }
     const user = await dbClient.db.collection('users').findOne({ _id: ObjectId(userId) });
     if (!user) {
-      res.status(401).json({ error: 'User not found' });
+      return res.status(401).json({ error: 'User not found' });
     }
     const {
       name, type, parentId = 0, isPublic = false, data,
