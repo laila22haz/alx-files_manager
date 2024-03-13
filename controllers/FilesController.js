@@ -44,15 +44,15 @@ class FilesController {
         return res.status(400).json({ error: 'Parent is not a folder' });
       }
     }
-    const ObjectData = {
+    const objectData = {
       userId: user._id.toString(),
       name,
       type,
-      parentId,
       isPublic,
+      parentId,
     };
     if (type === 'folder') {
-      const newFolder = await dbClient.db.collection('files').insertOne(ObjectData);
+      const newFolder = await dbClient.db.collection('files').insertOne(objectData);
       const [ops] = newFolder.ops;
       const result = {
         id: ops._id.toString(),
