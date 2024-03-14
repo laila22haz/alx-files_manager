@@ -85,12 +85,13 @@ class FilesController {
   }
 
   static async getShow(req, res) {
-    const userId = await getTokenUser(req);
+    let userId = await getTokenUser(req);
     if (!userId) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
-    const { id } = req.params;
-    const file = await dbClient.db.collection('files').findOne({ id, userId });
+    const _id = ObjectId(req.params.id);
+    userId = ObjectId(userId);
+    const file = await dbClient.db.collection('files').findOne({ _id, userId });
     if (!(file)) {
       return res.status(404).json({ error: 'Not found' });
     }
