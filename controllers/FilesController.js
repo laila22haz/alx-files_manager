@@ -83,6 +83,53 @@ class FilesController {
     };
     return res.status(201).json(result);
   }
+
+  static async getShow(req, res) {
+    const userId = await getTokenUser(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const { id } = req.params;
+    const file = await dbClient.db.collection('files').findOne({ id, userId });
+    if (!(file)) {
+      return res.status(404).json({ error: 'Not found' });
+    }
+    return res.status(201).json(file);
+  }
+
+  static async getIndex(req, res) {
+    const userId = await getTokenUser(req);
+    console.log(userId);
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const { parentId, page = 0 } = req.query;
+    const limit = 20;
+
+    let query;
+    if (!parentId) {
+      query = {
+        userId: ObjectId(userId),
+      };
+    } else {
+      query = {
+        userId,
+        parentId,
+      };
+    }
+    const paginationFiles = [
+      { $match: query },
+      { $skip: (+page) * limit }, // +'123' === 123
+      { $limit: limit },
+    ];
+
+    const result = await dbClient.db.collection('files').aggregate(paginationFiles).toArray();
+    const modefyfResult = result.map(({ _id, localPath, ...element }) => ({
+      id: _id,
+      ...element,
+    }));
+    return res.status(200).json({ modefyfResult });
+  }
 }
 
 export default FilesController;
