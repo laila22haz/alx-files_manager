@@ -89,13 +89,14 @@ class FilesController {
     if (!userId) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
-    const _id = ObjectId(req.params.id);
+    const objectId = ObjectId(req.params.id);
     userId = ObjectId(userId);
-    const file = await dbClient.db.collection('files').findOne({ _id, userId });
+    const file = await dbClient.db.collection('files').findOne({ _id: objectId, userId });
     if (!(file)) {
       return res.status(404).json({ error: 'Not found' });
     }
-    return res.status(201).json(file);
+    const { _id, ...element } = file;
+    return res.status(200).json({ id: _id, ...element });
   }
 
   static async getIndex(req, res) {
@@ -110,12 +111,12 @@ class FilesController {
     let query;
     if (!parentId) {
       query = {
-        userId: ObjectId(userId),
+        userId, // : ObjectId(userId),
       };
     } else {
       query = {
-        userId: ObjectId(userId),
-        parentId: ObjectId(parentId),
+        userId, // : ObjectId(userId),
+        parentId, // : ObjectId(parentId),
       };
     }
     const paginationFiles = [
