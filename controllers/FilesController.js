@@ -111,12 +111,12 @@ class FilesController {
     let query;
     if (!parentId) {
       query = {
-        userId: ObjectId(userId), // : ObjectId(userId),
+        userId: ObjectId(userId),
       };
     } else {
       query = {
-        userId: ObjectId(userId), // : ObjectId(userId),
-        parentId: ObjectId(parentId), // : ObjectId(parentId),
+        userId: ObjectId(userId),
+        parentId: ObjectId(parentId),
       };
     }
     const paginationFiles = [
@@ -130,7 +130,7 @@ class FilesController {
       id: _id,
       ...element,
     }));
-    return res.status(200).json({ modefyfResult });
+    return res.status(200).json(modefyfResult);
   }
 }
 
