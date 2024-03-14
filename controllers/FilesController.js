@@ -113,8 +113,8 @@ class FilesController {
       };
     } else {
       query = {
-        userId,
-        parentId,
+        userId: ObjectId(userId),
+        parentId ObjectId(parentId)
       };
     }
     const paginationFiles = [
