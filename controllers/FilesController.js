@@ -141,7 +141,8 @@ class FilesController {
     userId = ObjectId(userId);
     const file = await dbClient.db.collection('files').findOneAndUpdate(
       { _id: objectId, userId },
-      { $set: { isPublic: true } },
+      { $set: { isPublic: true }},
+      { returnOriginal: false }
     );
     if (!(file.value)) {
       return res.status(404).json({ error: 'Not found' });
@@ -158,7 +159,8 @@ class FilesController {
     userId = ObjectId(userId);
     const file = await dbClient.db.collection('files').findOneAndUpdate(
       { _id: objectId, userId },
-      { $set: { isPublic: false } },
+      { $set: { isPublic: false }},
+      { returnOriginal: false }
     );
     if (!(file.value)) {
       return res.status(404).json({ error: 'Not found' });
