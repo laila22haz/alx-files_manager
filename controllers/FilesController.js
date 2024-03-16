@@ -85,12 +85,12 @@ class FilesController {
   }
 
   static async getShow(req, res) {
-    let userId = await getTokenUser(req);
+    const userId = await getTokenUser(req);
     if (!userId) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
     const objectId = ObjectId(req.params.id);
-    userId = ObjectId(userId);
+    // userId = ObjectId(userId);
     const file = await dbClient.db.collection('files').findOne({ _id: objectId, userId });
     if (!(file)) {
       return res.status(404).json({ error: 'Not found' });
@@ -141,8 +141,8 @@ class FilesController {
     userId = ObjectId(userId);
     const file = await dbClient.db.collection('files').findOneAndUpdate(
       { _id: objectId, userId },
-      { $set: { isPublic: true }},
-      { returnOriginal: false }
+      { $set: { isPublic: true } },
+      { returnOriginal: false },
     );
     if (!(file.value)) {
       return res.status(404).json({ error: 'Not found' });
@@ -159,8 +159,8 @@ class FilesController {
     userId = ObjectId(userId);
     const file = await dbClient.db.collection('files').findOneAndUpdate(
       { _id: objectId, userId },
-      { $set: { isPublic: false }},
-      { returnOriginal: false }
+      { $set: { isPublic: false } },
+      { returnOriginal: false },
     );
     if (!(file.value)) {
       return res.status(404).json({ error: 'Not found' });
