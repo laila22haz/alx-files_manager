@@ -101,7 +101,6 @@ class FilesController {
 
   static async getIndex(req, res) {
     const userId = await getTokenUser(req);
-    console.log(userId);
     if (!userId) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -131,6 +130,40 @@ class FilesController {
       ...element,
     }));
     return res.status(200).json(modefyfResult);
+  }
+
+  static async putPublish(req, res) {
+    let userId = await getTokenUser(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const objectId = ObjectId(req.params.id);
+    userId = ObjectId(userId);
+    const file = await dbClient.db.collection('files').findOneAndUpdate(
+      { _id: objectId, userId },
+      { $set: { isPublic: true } },
+    );
+    if (!(file.value)) {
+      return res.status(404).json({ error: 'Not found' });
+    }
+    return res.status(200).json(file.value);
+  }
+
+  static async putUnpublish(req, res) {
+    let userId = await getTokenUser(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const objectId = ObjectId(req.params.id);
+    userId = ObjectId(userId);
+    const file = await dbClient.db.collection('files').findOneAndUpdate(
+      { _id: objectId, userId },
+      { $set: { isPublic: false } },
+    );
+    if (!(file.value)) {
+      return res.status(404).json({ error: 'Not found' });
+    }
+    return res.status(200).json(file.value);
   }
 }
 
